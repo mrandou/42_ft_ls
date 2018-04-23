@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/23 15:43:19 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/23 18:06:19 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void 		ls_print(t_list *list, char *path, int flags)
 {
 	if (flags & M_ARG)
 		ft_putmthings(path, ":", NULL, 0);
+	if (flags & FLG_T)
+		list = ls_time_sort(list, path);
 	if (!(flags & FLG_R))
 		list = ft_lstrev(list, NULL);
 	ft_putlst(list);

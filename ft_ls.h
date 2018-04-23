@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/23 15:28:26 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/23 18:00:37 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@
 
 typedef struct s_infos
 {
-	unsigned int		 opt_flags;
-	t_list *path_lst;
+	unsigned int		opt_flags;
+	t_list 					*path_lst;
 }								t_infos;
 
-int 					ls_parse(char **argv, t_infos *infos);
+void 					ls_error(int code, char *path);
+
+int 					ls_parse(char **argv, int argc, t_infos *infos);
 unsigned int	ls_get_flags(char *arg);
 
 void 					ls_options(t_infos *infos);
@@ -45,5 +47,7 @@ void 					ls_print(t_list *list, char *path, int flags);
 t_list				*ls_path_content(char *path, int flags);
 
 void 					ls_merge_sort(t_list **list, int (*f_cmp)());
+
+t_list 				*ls_time_sort(t_list *list, char *path);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/15 13:40:23 by mrandou           #+#    #+#              #
-#    Updated: 2018/04/23 14:59:26 by mrandou          ###   ########.fr        #
+#    Updated: 2018/04/23 17:56:04 by mrandou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ INCLUDE =		ft_ls.h
 SRC			=		ft_ls.c \
 						ls_parse.c \
 						ls_options.c \
-						ls_merge_sort.c
+						ls_merge_sort.c \
+						ls_time_sort.c
 
 OBJS		=		$(SRC:.c=.o)
 

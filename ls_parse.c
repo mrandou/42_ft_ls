@@ -6,20 +6,26 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:23:32 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/23 12:05:18 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/23 17:28:54 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int				ls_parse(char **argv, t_infos *infos)
+int				ls_parse(char **argv, int argc, t_infos *infos)
 {
 	t_list	*tmp;
+	int nb_flags;
 
+	nb_flags = 0;
+	tmp = NULL;
 	while (*argv)
 	{
 		if (**argv == '-')
+		{
 			infos->opt_flags |= ls_get_flags(*argv);
+			nb_flags++;
+		}
 		else
 		{
 			if (!(tmp = ft_lstnew(*argv, sizeof(*argv))))
@@ -28,6 +34,9 @@ int				ls_parse(char **argv, t_infos *infos)
 		}
 		argv++;
 	}
+	if (nb_flags == (argc - 1))
+		if (!(infos->path_lst = ft_lstnew(".", sizeof(char *))))
+			return (-1);
 	return (0);
 }
 
