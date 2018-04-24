@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/23 18:00:37 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/24 17:37:56 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,23 @@
 # define	FLG_T		0b010000
 # define	M_ARG		0b100000
 
+# define	BAD_FLAG	404
+# define	BAD_ARG		604
+
 typedef struct s_infos
 {
 	unsigned int		opt_flags;
 	t_list 					*path_lst;
 }								t_infos;
 
-void 					ls_error(int code, char *path);
+void					ls_error(int code, char *path);
 
-int 					ls_parse(char **argv, int argc, t_infos *infos);
-unsigned int	ls_get_flags(char *arg);
+int						ls_parse(char **argv, int argc, t_infos *infos);
+unsigned int		ls_get_flags(char *arg);
 
-void 					ls_options(t_infos *infos);
-void 					ls_print(t_list *list, char *path, int flags);
+void					ls_options(t_infos *infos);
+int						ls_arg_sort(char *arg1, char *arg2);
+int						ls_print(t_list *list, char *path, int flags);
 t_list				*ls_path_content(char *path, int flags);
 
 void 					ls_merge_sort(t_list **list, int (*f_cmp)());

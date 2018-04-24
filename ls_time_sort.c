@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 17:30:39 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/23 18:02:27 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/24 16:25:26 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int     date_cmp(t_list *d1, t_list *d2)
     path = get_path(NULL);
     path_date1 = ft_strjoin(path, (char *)d1);
     path_date2 = ft_strjoin(path, (char *)d2);
+		errno = 0;
     lstat(path_date1, &infos1);
 		ls_error(errno, path_date1);
     lstat(path_date2, &infos2);

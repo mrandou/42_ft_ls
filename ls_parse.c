@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:23:32 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/23 17:28:54 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/24 17:39:29 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int				ls_parse(char **argv, int argc, t_infos *infos)
 		}
 		else
 		{
-			if (!(tmp = ft_lstnew(*argv, sizeof(*argv))))
+			if (!(tmp = ft_lstnew(*argv, ft_strlen(*argv) + 1)))
 				return (-1);
 			ft_lstadd(&infos->path_lst, tmp);
 		}
@@ -45,8 +45,18 @@ unsigned	int	ls_get_flags(char *arg)
 	unsigned int flag;
 
 	flag = 0;
+	if (ft_countoc(arg, '-') > 2)
+			ls_error(BAD_FLAG, &*arg);
+	if (ft_countoc(arg, '-') == 1 && !arg[1])
+	{
+			ls_error(BAD_ARG, "-");
+			return (0);
+	}
+	arg++;
 	while (*arg)
 	{
+		if (!(ft_strchr("-lRart", *arg)))
+			ls_error(BAD_FLAG, &*arg);
 		if (*arg == 'l')
 			flag |= FLG_L;
 		if (*arg == 'R')

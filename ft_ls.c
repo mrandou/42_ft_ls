@@ -6,19 +6,30 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/23 17:55:36 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/24 17:40:25 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void ls_error(int code, char *path)
+void ls_error(int code, char *name)
 {
+	if (code == BAD_FLAG)
+	{
+    ft_putstr("./ft_ls: illegal option -- ");
+    ft_putchar(name[0]);
+    ft_putbn();
+    ft_putendl("usage: ft_ls: [-lRart] [file...]");
+    exit(0);
+	}
+	if (code == BAD_ARG)
+    ft_putmthings("./ft_ls: ", name, ": No such file or directory", 0);
 	if (code == ENOENT)
   {
     ft_putstr("./ft_ls: ");
-    perror(path);
+    perror(name);
   }
+	errno = 0;
 }
 
 int main(int argc, char **argv)

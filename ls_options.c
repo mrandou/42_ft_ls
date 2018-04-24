@@ -6,48 +6,81 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/23 18:06:19 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/24 16:26:46 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void 	ls_options(t_infos *infos)
+void		ls_options(t_infos *infos)
 {
-	t_list *content_list;
+	int			endl;
+	t_list		*list;
 
-	content_list = NULL;
+	endl = 0;
+	list = NULL;
 	ls_merge_sort(&infos->path_lst, &ft_strcmp);
 	if (infos->opt_flags & FLG_R)
 		infos->path_lst = ft_lstrev(infos->path_lst, NULL);
 	if (infos->path_lst->next)
 		infos->opt_flags |= M_ARG;
+	ls_merge_sort(&infos->path_lst, &ls_arg_sort);
 	while (infos->path_lst)
 	{
-		content_list = ls_path_content(infos->path_lst->content, infos->opt_flags);
-		ls_print(content_list, infos->path_lst->content, infos->opt_flags);
-		if (infos->path_lst->next)
+		list = ls_path_content(infos->path_lst->content, infos->opt_flags);
+		endl = ls_print(list, infos->path_lst->content, infos->opt_flags);
+		if (infos->path_lst->next && endl)
 			ft_putbn();
 		infos->path_lst = infos->path_lst->next;
 	}
 }
 
-void 		ls_print(t_list *list, char *path, int flags)
+int			ls_arg_sort(char *arg1, char *arg2)
 {
-	if (flags & M_ARG)
-		ft_putmthings(path, ":", NULL, 0);
-	if (flags & FLG_T)
-		list = ls_time_sort(list, path);
-	if (!(flags & FLG_R))
-		list = ft_lstrev(list, NULL);
-	ft_putlst(list);
+	struct stat		infos1;
+	struct stat		infos2;
+	int					stat_return[2];
+
+	stat_return[0] = lstat(arg1, &infos1);
+	stat_return[1] = lstat(arg2, &infos2);
+	if (((infos1.st_mode & S_IFDIR) && !(infos2.st_mode & S_IFDIR)) ||
+				(stat_return[0] == 0 && stat_return[1] != 0))
+		return (1);
+	return (0);
 }
 
-t_list	*ls_path_content(char *path, int flags)
+int			ls_print(t_list *list, char *path, int flags)
 {
-	DIR 					*dir;
-	struct dirent	*directory;
-	t_list 				*tmp;
+	struct stat	infos;
+	int				error;
+
+	error = 0;
+	error = lstat(path, &infos);
+	ls_error(errno, path);
+	if (error == 0)
+	{
+		if ((flags & M_ARG) && (infos.st_mode & S_IFDIR))
+			ft_putmthings(path, ":", NULL, 0);
+		if (!(infos.st_mode & S_IFDIR))
+		{
+			ft_putendl(path);
+			return (0);
+		}
+		if (flags & FLG_T)
+			list = ls_time_sort(list, path);
+		if (!(flags & FLG_R))
+			list = ft_lstrev(list, NULL);
+		ft_putlst(list);
+		return (1);
+	}
+	return (0);
+}
+
+t_list		*ls_path_content(char *path, int flags)
+{
+	DIR						*dir;
+	struct dirent		*directory;
+	t_list				*tmp;
 	t_list				*content_list;
 
 	tmp = NULL;
