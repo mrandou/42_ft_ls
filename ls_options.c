@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/24 16:26:46 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/25 13:18:30 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void		ls_options(t_infos *infos)
 
 int			ls_arg_sort(char *arg1, char *arg2)
 {
-	struct stat		infos1;
-	struct stat		infos2;
+	struct stat			infos1;
+	struct stat			infos2;
 	int					stat_return[2];
 
 	stat_return[0] = lstat(arg1, &infos1);
@@ -52,7 +52,7 @@ int			ls_arg_sort(char *arg1, char *arg2)
 int			ls_print(t_list *list, char *path, int flags)
 {
 	struct stat	infos;
-	int				error;
+	int			error;
 
 	error = 0;
 	error = lstat(path, &infos);
@@ -78,7 +78,7 @@ int			ls_print(t_list *list, char *path, int flags)
 
 t_list		*ls_path_content(char *path, int flags)
 {
-	DIR						*dir;
+	DIR					*dir;
 	struct dirent		*directory;
 	t_list				*tmp;
 	t_list				*content_list;
@@ -93,11 +93,11 @@ t_list		*ls_path_content(char *path, int flags)
 		{
 			while (directory->d_name[0] == '.')
 				if ((directory = readdir(dir)) == NULL)
-						return (NULL);
+					return (NULL);
 		}
 		if (!(tmp = ft_lstnew(directory->d_name, sizeof(directory->d_name))))
-      return (NULL);
-    ft_lstadd(&content_list, tmp);
+			return (NULL);
+		t_lstadd(&content_list, tmp);
 	}
 	if (closedir(dir) == -1)
 		return (NULL);
