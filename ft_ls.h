@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/24 17:37:56 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/25 18:03:43 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,19 @@ typedef struct s_infos
 void					ls_error(int code, char *path);
 
 int						ls_parse(char **argv, int argc, t_infos *infos);
-unsigned int		ls_get_flags(char *arg);
+unsigned int	ls_get_flags(char *arg);
 
 void					ls_options(t_infos *infos);
 int						ls_arg_sort(char *arg1, char *arg2);
+void					ls_execution(t_list *list, char *path, int flags);
 int						ls_print(t_list *list, char *path, int flags);
 t_list				*ls_path_content(char *path, int flags);
 
 void 					ls_merge_sort(t_list **list, int (*f_cmp)());
 
 t_list 				*ls_time_sort(t_list *list, char *path);
+
+void					ls_recursive(t_list *list, char *path, int flags);
+void					ls_recursive_exec(t_list *nxtlst, char *path, char *sc, int f);
 
 #endif
