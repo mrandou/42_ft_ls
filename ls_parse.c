@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:23:32 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/24 17:39:29 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/25 18:04:01 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ unsigned	int	ls_get_flags(char *arg)
 			ls_error(BAD_FLAG, &*arg);
 	if (ft_countoc(arg, '-') == 1 && !arg[1])
 	{
+			flag |= M_ARG;
 			ls_error(BAD_ARG, "-");
 			return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/24 17:40:25 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/25 17:37:08 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ void ls_error(int code, char *name)
   {
     ft_putstr("./ft_ls: ");
     perror(name);
+  }
+	if (errno == EACCES)
+  {
+    ft_putstr("./ft_ls: ");
+    name = ft_strrchr(name, '/');
+    if (name[0] == '/')
+      perror(&name[1]);
+    else
+      perror(name);
   }
 	errno = 0;
 }

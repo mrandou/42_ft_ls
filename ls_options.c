@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/25 13:18:30 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/25 18:38:05 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,15 @@ void		ls_options(t_infos *infos)
 	while (infos->path_lst)
 	{
 		list = ls_path_content(infos->path_lst->content, infos->opt_flags);
-		endl = ls_print(list, infos->path_lst->content, infos->opt_flags);
+		if (infos->opt_flags & FLG_BR)
+		{
+			endl = ls_print(list, infos->path_lst->content, infos->opt_flags );
+			if (endl)
+				ft_putbn();
+			ls_recursive(list, infos->path_lst->content, infos->opt_flags);
+		}
+		else
+			endl = ls_print(list, infos->path_lst->content, infos->opt_flags);
 		if (infos->path_lst->next && endl)
 			ft_putbn();
 		infos->path_lst = infos->path_lst->next;
@@ -49,29 +57,37 @@ int			ls_arg_sort(char *arg1, char *arg2)
 	return (0);
 }
 
+void		ls_execution(t_list *list, char *path, int flags)
+{
+	if (flags & FLG_T)
+		list = ls_time_sort(list, path);
+	if (flags & FLG_R)
+		list = ft_lstrev(list, NULL);
+}
+
 int			ls_print(t_list *list, char *path, int flags)
 {
 	struct stat	infos;
-	int			error;
+	int			i;
 
-	error = 0;
-	error = lstat(path, &infos);
+	errno = 0;
+	i = 0;
+	lstat(path, &infos);
 	ls_error(errno, path);
-	if (error == 0)
+	if (path[0] == '/')
+		i = 1;
+	if (errno == 0)
 	{
 		if ((flags & M_ARG) && (infos.st_mode & S_IFDIR))
-			ft_putmthings(path, ":", NULL, 0);
+			ft_putmthings(path + i, ":", NULL, 0);
 		if (!(infos.st_mode & S_IFDIR))
-		{
 			ft_putendl(path);
-			return (0);
+		ls_execution(list, path, flags);
+		if (list)
+		{
+			ft_putlst(list);
+			return (1);
 		}
-		if (flags & FLG_T)
-			list = ls_time_sort(list, path);
-		if (!(flags & FLG_R))
-			list = ft_lstrev(list, NULL);
-		ft_putlst(list);
-		return (1);
 	}
 	return (0);
 }
@@ -86,20 +102,22 @@ t_list		*ls_path_content(char *path, int flags)
 	tmp = NULL;
 	content_list = NULL;
 	if (!(dir = opendir(path)))
+	{
+		ls_error(errno, path);
 		return (NULL);
+	}
 	while ((directory = readdir(dir)) != NULL)
 	{
 		if (!(flags & FLG_A))
-		{
 			while (directory->d_name[0] == '.')
 				if ((directory = readdir(dir)) == NULL)
 					return (NULL);
-		}
 		if (!(tmp = ft_lstnew(directory->d_name, sizeof(directory->d_name))))
 			return (NULL);
-		t_lstadd(&content_list, tmp);
+		ft_lstadd(&content_list, tmp);
 	}
 	if (closedir(dir) == -1)
 		return (NULL);
+	ls_merge_sort(&content_list, &ft_strcmp);
 	return (content_list);
 }
