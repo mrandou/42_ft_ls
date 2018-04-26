@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/26 12:08:33 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/26 18:03:33 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,11 @@ t_list 				*ls_time_sort(t_list *list, char *path);
 
 void					ls_recursive(t_list *list, char *path, int flags);
 void					ls_recursive_exec(char *path, char *sc, int f);
+
+void					ls_list(t_list *list, char *path);
+void					ls_print_infos(struct stat infos, char *name, int *tab);
+int						*ls_links_and_blanks(t_list *list, char *path);
+char					*ls_permission(struct stat infos);
+char					ls_get_type(struct stat infos);
 
 #endif

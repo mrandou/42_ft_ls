@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:23:32 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/25 18:04:01 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/26 14:30:07 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int				ls_parse(char **argv, int argc, t_infos *infos)
 	tmp = NULL;
 	while (*argv)
 	{
-		if (**argv == '-')
+		if (**argv == '-' && !tmp)
 		{
 			infos->opt_flags |= ls_get_flags(*argv);
 			nb_flags++;

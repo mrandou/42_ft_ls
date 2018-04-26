@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/26 13:30:59 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/26 14:56:06 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void		ls_options(t_infos *infos)
 	{
 		if (infos->opt_flags & FLG_BR)
 		{
-			list = ls_execution(list, infos->path_lst->content, infos->opt_flags );
+			list = ls_execution(list, infos->path_lst->content, infos->opt_flags);
 			if (list)
 				ft_putbn();
 			ls_recursive(list, infos->path_lst->content, infos->opt_flags);
 		}
 		else
 			list = ls_execution(list, infos->path_lst->content, infos->opt_flags);
-		if (infos->path_lst->next)
+		if (infos->path_lst->next && list)
 			ft_putbn();
 		infos->path_lst = infos->path_lst->next;
 	}
@@ -76,7 +76,9 @@ t_list		*ls_execution(t_list *list, char *path, int flags)
 			list = ls_time_sort(list, path);
 		if (flags & FLG_R)
 			list = ft_lstrev(list, NULL);
-		if (list)
+		if (flags & FLG_L)
+			ls_list(list, path);
+		else if (list)
 			ft_putlst(list);
 	}
 	return (list);
