@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/25 18:38:05 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/26 13:30:59 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void		ls_options(t_infos *infos)
 {
-	int			endl;
 	t_list		*list;
 
-	endl = 0;
 	list = NULL;
 	ls_merge_sort(&infos->path_lst, &ft_strcmp);
 	if (infos->opt_flags & FLG_R)
@@ -27,17 +25,16 @@ void		ls_options(t_infos *infos)
 	ls_merge_sort(&infos->path_lst, &ls_arg_sort);
 	while (infos->path_lst)
 	{
-		list = ls_path_content(infos->path_lst->content, infos->opt_flags);
 		if (infos->opt_flags & FLG_BR)
 		{
-			endl = ls_print(list, infos->path_lst->content, infos->opt_flags );
-			if (endl)
+			list = ls_execution(list, infos->path_lst->content, infos->opt_flags );
+			if (list)
 				ft_putbn();
 			ls_recursive(list, infos->path_lst->content, infos->opt_flags);
 		}
 		else
-			endl = ls_print(list, infos->path_lst->content, infos->opt_flags);
-		if (infos->path_lst->next && endl)
+			list = ls_execution(list, infos->path_lst->content, infos->opt_flags);
+		if (infos->path_lst->next)
 			ft_putbn();
 		infos->path_lst = infos->path_lst->next;
 	}
@@ -57,39 +54,32 @@ int			ls_arg_sort(char *arg1, char *arg2)
 	return (0);
 }
 
-void		ls_execution(t_list *list, char *path, int flags)
-{
-	if (flags & FLG_T)
-		list = ls_time_sort(list, path);
-	if (flags & FLG_R)
-		list = ft_lstrev(list, NULL);
-}
-
-int			ls_print(t_list *list, char *path, int flags)
+t_list		*ls_execution(t_list *list, char *path, int flags)
 {
 	struct stat	infos;
 	int			i;
+	int 		error;
 
-	errno = 0;
 	i = 0;
-	lstat(path, &infos);
-	ls_error(errno, path);
 	if (path[0] == '/')
 		i = 1;
-	if (errno == 0)
+	error = lstat(path, &infos);
+	ls_error(errno, path);
+	if (error == 0)
 	{
 		if ((flags & M_ARG) && (infos.st_mode & S_IFDIR))
 			ft_putmthings(path + i, ":", NULL, 0);
 		if (!(infos.st_mode & S_IFDIR))
 			ft_putendl(path);
-		ls_execution(list, path, flags);
+		list = ls_path_content(path, flags);
+		if (flags & FLG_T)
+			list = ls_time_sort(list, path);
+		if (flags & FLG_R)
+			list = ft_lstrev(list, NULL);
 		if (list)
-		{
 			ft_putlst(list);
-			return (1);
-		}
 	}
-	return (0);
+	return (list);
 }
 
 t_list		*ls_path_content(char *path, int flags)
