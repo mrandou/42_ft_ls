@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/26 18:03:33 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/27 18:21:02 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 # include <stdio.h>
 # include <string.h>
 
-# define	FLG_L		0b000001
-# define	FLG_BR	0b000010
-# define	FLG_A		0b000100
-# define	FLG_R 	0b001000
-# define	FLG_T		0b010000
-# define	M_ARG		0b100000
+# define	FLG_L			0b000001
+# define	FLG_BR		0b000010
+# define	FLG_A			0b000100
+# define	FLG_R 		0b001000
+# define	FLG_T			0b010000
+# define	M_ARG			0b100000
+
+# define	SIX_MONTH	15770000
 
 # define	BAD_FLAG	404
 # define	BAD_ARG		604
@@ -60,6 +62,8 @@ void					ls_recursive_exec(char *path, char *sc, int f);
 void					ls_list(t_list *list, char *path);
 void					ls_print_infos(struct stat infos, char *name, int *tab);
 int						*ls_links_and_blanks(t_list *list, char *path);
+int						*ls_blanks(struct stat infos, int *tab);
+
 char					*ls_permission(struct stat infos);
 char					ls_get_type(struct stat infos);
 
