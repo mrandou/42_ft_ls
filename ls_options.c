@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/27 13:28:47 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/30 17:23:25 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_list		*ls_execution(t_list *list, char *path, int flags)
 	if (error == 0)
 	{
 		if ((flags & M_ARG) && (infos.st_mode & S_IFDIR))
-			ft_putmthings(path + i, ":", NULL, 0);
+			ft_mprintf("ss\n", path + i, ":", NULL);
 		if (!(infos.st_mode & S_IFDIR))
 			ft_putendl(path);
 		list = ls_path_content(path, flags);
@@ -93,6 +93,8 @@ t_list		*ls_path_content(char *path, int flags)
 
 	tmp = NULL;
 	content_list = NULL;
+	if (!(ls_access(path)))
+		return (NULL);
 	if (!(dir = opendir(path)))
 	{
 		ls_error(errno, path);

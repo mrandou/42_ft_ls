@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 18:21:53 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/27 18:22:15 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/30 17:16:56 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,16 @@ char		ls_get_type(struct stat infos)
 	if ((infos.st_mode & S_IFMT) == S_IFBLK)
 		type = 'b';
 	return (type);
+}
+
+int			ls_access(char *path)
+{
+	struct stat 	infos;
+
+	lstat(path, &infos);
+	if (ls_error(errno, path) == -1)
+		return (-1);
+	if (infos.st_mode & S_IXUSR)
+		return (1);
+	return (0);
 }

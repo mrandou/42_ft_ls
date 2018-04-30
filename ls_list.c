@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 14:52:38 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/27 19:12:58 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/30 17:14:17 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	ls_list(t_list *list, char *path_name) //pointeur sur fonction ? stat <-> lstat
 {
-	struct stat infos;
-	char *path;
-	int *tab;
+	struct stat	infos;
+	char		*path;
+	int			*tab;
 
 	path = NULL;
 	tab = ls_links_and_blanks(list, path_name);
@@ -29,7 +29,10 @@ void	ls_list(t_list *list, char *path_name) //pointeur sur fonction ? stat <-> l
 		if (!(path = ft_strjoin(path, list->content)))
 			return ;
 		lstat(path, &infos);
-		ls_error(errno, path);
+		if (ls_error(errno, path) == -1)
+			return ;
+		if (errno)
+			list = list->next;
 		ls_print_infos(infos, list->content, tab);
 		ft_strdel(&path);
 		list = list->next;
@@ -42,7 +45,7 @@ void		ls_print_infos(struct stat infos, char *name, int *tab)
 {
 	struct passwd	*user;
 	struct group	*grp;
-	char					*permi;
+	char			*permi;
 
 	user = getpwuid(infos.st_uid); //			RECUP ERREUR UID;
 	grp = getgrgid(infos.st_gid);
@@ -64,10 +67,11 @@ void		ls_print_infos(struct stat infos, char *name, int *tab)
 	ft_mprintf("ss\n", " ", name, NULL);
 	ft_strdel(&permi);
 }
+//./ft_ls -lR /private/etc
 
 int		*ls_links_and_blanks(t_list *list, char *path)
 {
-	struct	stat 	infos;
+	struct	stat 			infos;
 	char					*tmp;
 	int						*tab;
 	int						i;
@@ -83,7 +87,8 @@ int		*ls_links_and_blanks(t_list *list, char *path)
 			return (0);
 	  if (!(tmp = ft_strjoin(tmp, list->content)))
 			return (0);
-		lstat(tmp, &infos);
+		if (lstat(tmp, &infos) != 0)
+			return (0);
 		if (!(tab = ls_blanks(infos, tab)))
 			return (NULL);
 		tab[0] = tab[0] + infos.st_blocks;

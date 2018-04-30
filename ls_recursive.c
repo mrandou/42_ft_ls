@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 13:55:45 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/26 14:43:43 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/30 17:14:46 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		ls_recursive(t_list *list, char *path, int flags)
 	while (list)
 	{
 		if (!ft_strcmp(list->content, "."))
-			list = list->next;
+		list = list->next;
 		if (!ft_strcmp(list->content, ".."))
 		{
 			if (list->next)
@@ -30,7 +30,7 @@ void		ls_recursive(t_list *list, char *path, int flags)
 		ls_recursive_exec(path, list->content, flags);
 		list = list->next;
 	}
-  ft_lstdel(&list, (void *)&ft_strdel);
+	ft_lstdel(&list, (void *)&ft_strdel);
 }
 
 void		ls_recursive_exec(char *path, char *scpath, int flags)
@@ -45,7 +45,8 @@ void		ls_recursive_exec(char *path, char *scpath, int flags)
 		return ;
 	if (!(tmp = ft_strjoin(tmp, scpath)))
 		return ;
-	lstat(tmp, &infos);
+	if (lstat(tmp, &infos) != 0)
+		return ;
 	if (infos.st_mode & S_IFDIR)
 	{
 		nxtlst = ls_execution(nxtlst, tmp, flags);

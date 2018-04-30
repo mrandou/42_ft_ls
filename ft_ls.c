@@ -6,13 +6,13 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/27 18:42:53 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/04/30 17:16:26 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void ls_error(int code, char *name)
+int ls_error(int code, char *name)
 {
 	if (code == BAD_FLAG)
 	{
@@ -23,13 +23,13 @@ void ls_error(int code, char *name)
     exit(0);
 	}
 	if (code == BAD_ARG)
-    ft_putmthings("./ft_ls: ", name, ": No such file or directory", 0);
+    ft_mprintf("sss\n", "./ft_ls: ", name, ": No such file or directory");
 	if (code == ENOENT)
   {
     ft_putstr("./ft_ls: ");
     perror(name);
   }
-	if (errno == EACCES)
+	if (code == EACCES)
   {
     ft_putstr("./ft_ls: ");
     name = ft_strrchr(name, '/');
@@ -39,6 +39,9 @@ void ls_error(int code, char *name)
       perror(name);
   }
 	errno = 0;
+  if (code)
+    return (-1);
+  return (0);
 }
 
 int main(int argc, char **argv)
