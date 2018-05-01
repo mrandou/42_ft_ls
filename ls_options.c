@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/30 17:23:25 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/01 16:39:30 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void		ls_options(t_infos *infos)
 
 	list = NULL;
 	ls_merge_sort(&infos->path_lst, &ft_strcmp);
+	if (infos->opt_flags & FLG_T)
+		infos->path_lst = ls_time_sort(infos->path_lst, ".");
 	if (infos->opt_flags & FLG_R)
 		infos->path_lst = ft_lstrev(infos->path_lst, NULL);
 	if (infos->path_lst->next)
@@ -27,13 +29,13 @@ void		ls_options(t_infos *infos)
 	{
 		if (infos->opt_flags & FLG_BR)
 		{
-			list = ls_execution(list, infos->path_lst->content, infos->opt_flags);
+			list = ls_exec(list, infos->path_lst->content, infos->opt_flags);
 			if (list)
 				ft_putbn();
 			ls_recursive(list, infos->path_lst->content, infos->opt_flags);
 		}
 		else
-			list = ls_execution(list, infos->path_lst->content, infos->opt_flags);
+			list = ls_exec(list, infos->path_lst->content, infos->opt_flags);
 		if (infos->path_lst->next && list)
 			ft_putbn();
 		infos->path_lst = infos->path_lst->next;
@@ -54,7 +56,7 @@ int			ls_arg_sort(char *arg1, char *arg2)
 	return (0);
 }
 
-t_list		*ls_execution(t_list *list, char *path, int flags)
+t_list		*ls_exec(t_list *list, char *path, int flags)
 {
 	struct stat	infos;
 	int			i;
