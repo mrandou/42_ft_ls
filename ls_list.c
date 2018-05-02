@@ -6,33 +6,33 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 14:52:38 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/01 17:26:45 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/02 16:42:22 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ls_list(t_list *list, char *path_name) //pointeur sur fonction ? stat <-> lstat
+void	ls_list(t_list *list, char *npath, int (*f_stat)(char *, struct stat *)) //pointeur sur fonction ? stat <-> lstat
 {
 	struct stat	infos;
 	char		*path;
 	int			*tab;
 
 	path = NULL;
-	if (!(tab = ls_links_and_blanks(list, path_name)))
+	if (!(tab = ls_links_and_blanks(list, npath)))
 		return ;
 	if (list)
 		ft_putmthings("total ", NULL, NULL, tab[0]);
 	while (list)
 	{
-		if (!(path = ft_strjoin(path_name, "/")))
+		if (!(path = ft_strjoin(npath, "/")))
 			return ;
 		if (!(path = ft_strjoin(path, list->content)))
 			return ;
-		lstat(path, &infos);
+		f_stat(path, &infos);
 		if (ls_error(errno, path) == -1)
 			return ;
-		ls_print_infos(infos, list->content, tab);
+		ls_print_infos(infos, path, list->content, tab);
 		ft_strdel(&path);
 		list = list->next;
 	}
@@ -40,7 +40,7 @@ void	ls_list(t_list *list, char *path_name) //pointeur sur fonction ? stat <-> l
 	ft_memdel((void *)&tab);
 }
 
-void		ls_print_infos(struct stat infos, char *name, int *tab)
+void		ls_print_infos(struct stat infos, char *path, char *name, int *tab)
 {
 	struct passwd	*user;
 	struct group	*grp;
@@ -67,7 +67,10 @@ void		ls_print_infos(struct stat infos, char *name, int *tab)
 		year);
 	else
 		ft_putstr(ft_strcut(ctime(&infos.st_mtime), 4, 16));
-	ft_mprintf("ss\n", " ", name, NULL);
+	ft_mprintf("ss", " ", name, NULL);
+	if ((infos.st_mode & S_IFMT) == S_IFLNK)
+		ls_symb_link(path, infos);
+	ft_putbn();
 	ft_strdel(&permi);
 	ft_strdel(&year);
 }

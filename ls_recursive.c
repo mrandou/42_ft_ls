@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 13:55:45 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/01 17:57:48 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/02 13:58:04 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,19 @@
 
 void		ls_recursive(t_list *list, char *path, int flags)
 {
+	t_list *head;
 
+	head = list;
 	flags |= M_ARG;
 	while (list)
 	{
 		if (!ft_strcmp(list->content, "."))
-			list = list->next;
+		{
+			if (list->next)
+				list = list->next;
+			else
+				return ;
+		}
 		if (!ft_strcmp(list->content, ".."))
 		{
 			if (list->next)
@@ -28,15 +35,18 @@ void		ls_recursive(t_list *list, char *path, int flags)
 				return ;
 		}
 		if (!ft_strcmp(list->content, "."))
-			list = list->next;
-		if (!list->content)
-			return ;
+		{
+			if (list->next)
+				list = list->next;
+			else
+				return ;
+		}
 		ls_recursive_exec(path, list->content, flags);
 		if (!list->next)
 			return ;
 		list = list->next;
 	}
-	ft_lstdel(&list, (void *)&ft_strdel);
+	ft_lstdel(&head, (void *)&ft_strdel);
 }
 
 void		ls_recursive_exec(char *path, char *scpath, int flags)
@@ -47,6 +57,8 @@ void		ls_recursive_exec(char *path, char *scpath, int flags)
 
 	nxtlst = NULL;
 	tmp = NULL;
+	if (!scpath || !path)
+		return ;
 	if (!(tmp = ft_strjoin(path, "/")))
 		return ;
 	if (!(tmp = ft_strjoin(tmp, scpath)))

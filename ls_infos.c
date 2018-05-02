@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 18:21:53 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/30 17:16:56 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/02 16:45:52 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,17 @@ int			ls_access(char *path)
 	if (infos.st_mode & S_IXUSR)
 		return (1);
 	return (0);
+}
+
+void		ls_symb_link(char *path, struct stat infos)
+{
+	char *rslt;
+
+	if (!(rslt = ft_strnew(infos.st_size)))
+		return ;
+	if ((infos.st_mode & S_IFMT) == S_IFLNK)
+		readlink(path, rslt, infos.st_size);
+	ft_putstr(" -> ");
+	ft_putstr(rslt);
+	ft_strdel(&rslt);
 }

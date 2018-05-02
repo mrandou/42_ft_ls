@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/01 16:39:30 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/02 16:43:25 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,17 @@ t_list		*ls_exec(t_list *list, char *path, int flags)
 	{
 		if ((flags & M_ARG) && (infos.st_mode & S_IFDIR))
 			ft_mprintf("ss\n", path + i, ":", NULL);
-		if (!(infos.st_mode & S_IFDIR))
+		if (!(infos.st_mode & S_IFDIR) && !(infos.st_mode & S_IFLNK))
 			ft_putendl(path);
 		list = ls_path_content(path, flags);
 		if (flags & FLG_T)
 			list = ls_time_sort(list, path);
 		if (flags & FLG_R)
 			list = ft_lstrev(list, NULL);
-		if (flags & FLG_L)
-			ls_list(list, path);
+		if (flags & FLG_L && (infos.st_mode & S_IFLNK))
+			ls_list(NULL, path, &stat);
+		else if (flags & FLG_L && !(infos.st_mode & S_IFLNK))
+			ls_list(list, path, &lstat);
 		else if (list)
 			ft_putlst(list);
 	}
