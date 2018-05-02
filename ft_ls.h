@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/01 16:16:46 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/02 15:19:15 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,37 +36,38 @@
 # define	BAD_FLAG		404
 # define	BAD_ARG			604
 
-typedef struct 			s_infos
+typedef struct 		s_infos
 {
-	unsigned int		opt_flags;
-	t_list 				*path_lst;
-}						t_infos;
+	unsigned int	opt_flags;
+	t_list 			*path_lst;
+}					t_infos;
 
-int						ls_error(int code, char *path);
+int					ls_error(int code, char *path);
 
-int						ls_parse(char **argv, int argc, t_infos *infos);
-unsigned int			ls_get_flags(char *arg);
+int					ls_parse(char **argv, int argc, t_infos *infos);
+unsigned int		ls_get_flags(char *arg);
 
-void					ls_options(t_infos *infos);
-int						ls_arg_sort(char *arg1, char *arg2);
-t_list					*ls_exec(t_list *list, char *path, int flags);
-t_list					*ls_path_content(char *path, int flags);
+void				ls_options(t_infos *infos);
+int					ls_arg_sort(char *arg1, char *arg2);
+t_list				*ls_exec(t_list *list, char *path, int flags);
+t_list				*ls_path_content(char *path, int flags);
 
-void 					ls_merge_sort(t_list **list, int (*f_cmp)());
+void 				ls_merge_sort(t_list **list, int (*f_cmp)());
 
-t_list 					*ls_time_sort(t_list *list, char *path);
+t_list 				*ls_time_sort(t_list *list, char *path);
 
-void					ls_recursive(t_list *list, char *path, int flags);
-void					ls_recursive_exec(char *path, char *sc, int f);
+void				ls_recursive(t_list *list, char *path, int flags);
+void				ls_recursive_exec(char *path, char *sc, int f);
 
-void					ls_list(t_list *list, char *path);
-void					ls_print_infos(struct stat infos, char *name, int *tab);
-void					ls_size_major_minor(struct stat infos, int *tab);
-int						*ls_links_and_blanks(t_list *list, char *path);
-int						*ls_blanks(struct stat infos, int *tab);
+void				ls_list(t_list *list, char *path, int (f_stat)());
+void				ls_print_infos(struct stat in, char *pa, char *n, int *tab);
+void				ls_size_major_minor(struct stat infos, int *tab);
+int					*ls_links_and_blanks(t_list *list, char *path);
+int					*ls_blanks(struct stat infos, int *tab);
 
-char					*ls_permission(struct stat infos);
-char					ls_get_type(struct stat infos);
-int						ls_access(char *path);
+char				*ls_permission(struct stat infos);
+char				ls_get_type(struct stat infos);
+int					ls_access(char *path);
+void				ls_symb_link(char *path, struct stat infos);
 
 #endif
