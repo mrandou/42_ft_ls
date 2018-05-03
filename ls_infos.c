@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 18:21:53 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/02 16:45:52 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/03 13:35:08 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,39 @@ void		ls_symb_link(char *path, struct stat infos)
 	ft_putstr(" -> ");
 	ft_putstr(rslt);
 	ft_strdel(&rslt);
+}
+
+void		ls_dir_link(char *path)
+{
+	struct passwd	*user;
+	struct group	*grp;
+	struct stat infos;
+	char *year;
+	char *permi;
+
+	if (lstat(path, &infos) != 0)
+		return ;
+	if (!(user = getpwuid(infos.st_uid)))
+		return ;
+	if (!(grp = getgrgid(infos.st_gid)))
+		return ;
+	permi = ls_permission(infos);
+	ft_mprintf("ss", permi, "  ", NULL);
+	ft_putnbr(infos.st_nlink);
+	ft_mprintf("ss", " ", user->pw_name, NULL);
+	ft_mprintf("sss", "  ", grp->gr_name, "  ");
+	ft_mprintf("ds", (void *)infos.st_size, " ", NULL);
+	if (!(year = ft_strsub(ctime(&infos.st_mtime), 20, 4)))
+		return ;
+	if ((time(NULL) - infos.st_mtime) > SIX_MONTH)
+		ft_mprintf("sss", ft_strcut(ctime(&infos.st_mtime), 4, 11), " ",
+		year);
+	else
+		ft_putstr(ft_strcut(ctime(&infos.st_mtime), 4, 16));
+	ft_mprintf("ss", " ", path, NULL);
+	if ((infos.st_mode & S_IFMT) == S_IFLNK)
+		ls_symb_link(path, infos);
+	ft_putbn();
+	ft_strdel(&permi);
+	ft_strdel(&year);
 }

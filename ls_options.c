@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/02 16:43:25 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/03 14:50:12 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,15 @@ t_list		*ls_exec(t_list *list, char *path, int flags)
 		if (!(infos.st_mode & S_IFDIR) && !(infos.st_mode & S_IFLNK))
 			ft_putendl(path);
 		list = ls_path_content(path, flags);
-		if (flags & FLG_T)
+		if (flags & FLG_T && !(infos.st_mode & S_IFLNK))
 			list = ls_time_sort(list, path);
-		if (flags & FLG_R)
+		if (flags & FLG_R && !(infos.st_mode & S_IFLNK))
 			list = ft_lstrev(list, NULL);
 		if (flags & FLG_L && (infos.st_mode & S_IFLNK))
-			ls_list(NULL, path, &stat);
+		{
+			ls_dir_link(path);
+			return (NULL);
+		}
 		else if (flags & FLG_L && !(infos.st_mode & S_IFLNK))
 			ls_list(list, path, &lstat);
 		else if (list)
@@ -97,7 +100,7 @@ t_list		*ls_path_content(char *path, int flags)
 
 	tmp = NULL;
 	content_list = NULL;
-	if (!(ls_access(path)))
+	if (ls_access(path) != 1)
 		return (NULL);
 	if (!(dir = opendir(path)))
 	{

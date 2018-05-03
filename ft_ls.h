@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/02 15:19:15 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/03 13:35:39 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ char				*ls_permission(struct stat infos);
 char				ls_get_type(struct stat infos);
 int					ls_access(char *path);
 void				ls_symb_link(char *path, struct stat infos);
+void				ls_dir_link(char *path);
 
 #endif

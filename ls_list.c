@@ -6,13 +6,13 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 14:52:38 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/02 16:42:22 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/03 13:35:47 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ls_list(t_list *list, char *npath, int (*f_stat)(char *, struct stat *)) //pointeur sur fonction ? stat <-> lstat
+void	ls_list(t_list *list, char *npath, int (*f_stat)(char *, struct stat *)) //pointeur sur fonction ? lstat <-> lstat
 {
 	struct stat	infos;
 	char		*path;
