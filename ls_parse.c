@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:23:32 by mrandou           #+#    #+#             */
-/*   Updated: 2018/04/26 14:30:07 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/03 17:25:32 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,18 @@ unsigned	int	ls_get_flags(char *arg)
 		arg++;
 	}
 	return (flag);
+}
+
+int			ls_arg_sort(char *arg1, char *arg2)
+{
+	struct stat			infos1;
+	struct stat			infos2;
+	int					stat_return[2];
+
+	stat_return[0] = lstat(arg1, &infos1);
+	stat_return[1] = lstat(arg2, &infos2);
+	if (((infos1.st_mode & S_IFDIR) && !(infos2.st_mode & S_IFDIR)) ||
+				(stat_return[0] == 0 && stat_return[1] != 0))
+		return (1);
+	return (0);
 }

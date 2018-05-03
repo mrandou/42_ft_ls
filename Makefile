@@ -6,7 +6,7 @@
 #    By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/15 13:40:23 by mrandou           #+#    #+#              #
-#    Updated: 2018/04/30 13:55:56 by mrandou          ###   ########.fr        #
+#    Updated: 2018/05/03 16:26:53 by mrandou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,13 +28,19 @@ OBJS		=		$(SRC:.c=.o)
 
 CC			=		gcc
 
-CFLAGS		+=		-Wall -Wextra -Werror -g
+CFLAGS		+=		-Wall -Wextra -Werror
+
 
 all:				$(NAME)
+
+$(OBJS):			$(INCLUDE)
 
 $(NAME):			$(OBJS)
 					make -C "./libft"
 					$(CC) -I"libft" -L"libft" -lft -o $(NAME) $(OBJS)
+
+%.o: %.c ./Makefile
+	$(CC) $(CFLAGS) $(ICFLAGS) -o $@ -c $<
 
 clean:
 					make -C "./libft" clean

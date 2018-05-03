@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 18:21:53 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 13:35:08 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/03 18:34:00 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void		ls_symb_link(char *path, struct stat infos)
 
 	if (!(rslt = ft_strnew(infos.st_size)))
 		return ;
+	if (!infos.st_size)
+		infos.st_size = 5;
 	if ((infos.st_mode & S_IFMT) == S_IFLNK)
 		readlink(path, rslt, infos.st_size);
 	ft_putstr(" -> ");

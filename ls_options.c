@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 14:50:12 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/03 18:22:43 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,6 @@ void		ls_options(t_infos *infos)
 	}
 }
 
-int			ls_arg_sort(char *arg1, char *arg2)
-{
-	struct stat			infos1;
-	struct stat			infos2;
-	int					stat_return[2];
-
-	stat_return[0] = lstat(arg1, &infos1);
-	stat_return[1] = lstat(arg2, &infos2);
-	if (((infos1.st_mode & S_IFDIR) && !(infos2.st_mode & S_IFDIR)) ||
-				(stat_return[0] == 0 && stat_return[1] != 0))
-		return (1);
-	return (0);
-}
-
 t_list		*ls_exec(t_list *list, char *path, int flags)
 {
 	struct stat	infos;
@@ -84,7 +70,7 @@ t_list		*ls_exec(t_list *list, char *path, int flags)
 			return (NULL);
 		}
 		else if (flags & FLG_L && !(infos.st_mode & S_IFLNK))
-			ls_list(list, path, &lstat);
+			ls_list(list, path);
 		else if (list)
 			ft_putlst(list);
 	}

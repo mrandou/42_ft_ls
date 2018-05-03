@@ -6,13 +6,13 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 14:52:38 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 13:35:47 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/03 18:12:01 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ls_list(t_list *list, char *npath, int (*f_stat)(char *, struct stat *)) //pointeur sur fonction ? lstat <-> lstat
+void	ls_list(t_list *list, char *npath)
 {
 	struct stat	infos;
 	char		*path;
@@ -25,11 +25,9 @@ void	ls_list(t_list *list, char *npath, int (*f_stat)(char *, struct stat *)) //
 		ft_putmthings("total ", NULL, NULL, tab[0]);
 	while (list)
 	{
-		if (!(path = ft_strjoin(npath, "/")))
+		if (!(path = ft_strmjoin(npath, "/", list->content)))
 			return ;
-		if (!(path = ft_strjoin(path, list->content)))
-			return ;
-		f_stat(path, &infos);
+		lstat(path, &infos);
 		if (ls_error(errno, path) == -1)
 			return ;
 		ls_print_infos(infos, path, list->content, tab);
@@ -47,7 +45,7 @@ void		ls_print_infos(struct stat infos, char *path, char *name, int *tab)
 	char			*permi;
 	char			*year;
 
-	if (!(user = getpwuid(infos.st_uid))) //			RECUP ERREUR UID ?
+	if (!(user = getpwuid(infos.st_uid)))
 		return ;
 	if (!(grp = getgrgid(infos.st_gid)))
 		return ;
@@ -110,9 +108,7 @@ int		*ls_links_and_blanks(t_list *list, char *path)
 		tab[i++] = 0;
 	while (list)
 	{
-		if (!(tmp = ft_strjoin(path, "/")))
-			return (0);
-		if (!(tmp = ft_strjoin(tmp, list->content)))
+		if (!(tmp = ft_strmjoin(path, "/", list->content)))
 			return (0);
 		if (lstat(tmp, &infos) != 0)
 			return (0);
