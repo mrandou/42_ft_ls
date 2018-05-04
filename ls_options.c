@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 18:22:43 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/04 11:53:27 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,16 @@ t_list		*ls_path_content(char *path, int flags)
 		return (NULL);
 	ls_merge_sort(&content_list, &ft_strcmp);
 	return (content_list);
+}
+
+int			ls_access(char *path)
+{
+	struct stat 	infos;
+
+	lstat(path, &infos);
+	if (ls_error(errno, path) == -1)
+		return (-1);
+	if (infos.st_mode & S_IXUSR)
+		return (1);
+	return (0);
 }

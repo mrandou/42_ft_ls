@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 18:21:53 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 18:34:00 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/04 14:00:36 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,26 @@ char		*ls_permission(struct stat infos)
 	if (infos.st_mode & S_IXOTH)
 		permission[9] = 'x';
 	permission[0] = ls_get_type(infos);
+	permission = ls_sticky_and_sgid(infos, permission);
+	return (permission);
+}
+
+char		*ls_sticky_and_sgid(struct stat infos, char *permission)
+{
+	if (infos.st_mode & S_ISUID)
+		permission[3] = 'S';
+	if (infos.st_mode & S_ISGID)
+		permission[6] = 'S';
+	if (infos.st_mode & S_ISVTX)
+		permission[9] = 'T';
+	if ((infos.st_mode & S_ISUID) && (infos.st_mode & S_IXUSR))
+		permission[3] = 's';
+	if ((infos.st_mode & S_ISGID)  && (infos.st_mode & S_IXGRP))
+		permission[6] = 's';
+	if (infos.st_mode & S_ISVTX  && (infos.st_mode & S_IXOTH))
+		permission[9] = 't';
+	if (infos.st_mode & S_IFSHAD)
+		permission[0] = '+';
 	return (permission);
 }
 
@@ -62,18 +82,6 @@ char		ls_get_type(struct stat infos)
 	return (type);
 }
 
-int			ls_access(char *path)
-{
-	struct stat 	infos;
-
-	lstat(path, &infos);
-	if (ls_error(errno, path) == -1)
-		return (-1);
-	if (infos.st_mode & S_IXUSR)
-		return (1);
-	return (0);
-}
-
 void		ls_symb_link(char *path, struct stat infos)
 {
 	char *rslt;
@@ -89,20 +97,20 @@ void		ls_symb_link(char *path, struct stat infos)
 	ft_strdel(&rslt);
 }
 
-void		ls_dir_link(char *path)
+void ls_dir_link(char *path)
 {
-	struct passwd	*user;
-	struct group	*grp;
+	struct passwd *user;
+	struct group *grp;
 	struct stat infos;
 	char *year;
 	char *permi;
 
 	if (lstat(path, &infos) != 0)
-		return ;
+		return;
 	if (!(user = getpwuid(infos.st_uid)))
-		return ;
+		return;
 	if (!(grp = getgrgid(infos.st_gid)))
-		return ;
+		return;
 	permi = ls_permission(infos);
 	ft_mprintf("ss", permi, "  ", NULL);
 	ft_putnbr(infos.st_nlink);
@@ -110,10 +118,10 @@ void		ls_dir_link(char *path)
 	ft_mprintf("sss", "  ", grp->gr_name, "  ");
 	ft_mprintf("ds", (void *)infos.st_size, " ", NULL);
 	if (!(year = ft_strsub(ctime(&infos.st_mtime), 20, 4)))
-		return ;
+		return;
 	if ((time(NULL) - infos.st_mtime) > SIX_MONTH)
 		ft_mprintf("sss", ft_strcut(ctime(&infos.st_mtime), 4, 11), " ",
-		year);
+				   year);
 	else
 		ft_putstr(ft_strcut(ctime(&infos.st_mtime), 4, 16));
 	ft_mprintf("ss", " ", path, NULL);

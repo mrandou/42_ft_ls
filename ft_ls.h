@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 18:11:37 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/04 11:56:02 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int					ls_arg_sort(char *arg1, char *arg2);
 void				ls_options(t_infos *infos);
 t_list				*ls_exec(t_list *list, char *path, int flags);
 t_list				*ls_path_content(char *path, int flags);
+int					ls_access(char *path);
 
 void 				ls_merge_sort(t_list **list, int (*f_cmp)());
 
@@ -67,8 +68,8 @@ int					*ls_links_and_blanks(t_list *list, char *path);
 int					*ls_blanks(struct stat infos, int *tab);
 
 char				*ls_permission(struct stat infos);
+char				*ls_sticky_and_sgid(struct stat infos, char *permisssion);
 char				ls_get_type(struct stat infos);
-int					ls_access(char *path);
 void				ls_symb_link(char *path, struct stat infos);
 void				ls_dir_link(char *path);
 
