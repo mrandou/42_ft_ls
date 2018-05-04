@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/04 11:53:27 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/04 17:59:15 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void		ls_options(t_infos *infos)
 			ft_putbn();
 		infos->path_lst = infos->path_lst->next;
 	}
+	ft_lstdel(&infos->path_lst, (void *)&ft_strdel);
 }
 
 t_list		*ls_exec(t_list *list, char *path, int flags)
@@ -59,7 +60,8 @@ t_list		*ls_exec(t_list *list, char *path, int flags)
 			ft_mprintf("ss\n", path + i, ":", NULL);
 		if (!(infos.st_mode & S_IFDIR) && !(infos.st_mode & S_IFLNK))
 			ft_putendl(path);
-		list = ls_path_content(path, flags);
+		if (!(list = ls_path_content(path, flags)))
+			return (NULL);
 		if (flags & FLG_T && !(infos.st_mode & S_IFLNK))
 			list = ls_time_sort(list, path);
 		if (flags & FLG_R && !(infos.st_mode & S_IFLNK))
@@ -73,6 +75,7 @@ t_list		*ls_exec(t_list *list, char *path, int flags)
 			ls_list(list, path);
 		else if (list)
 			ft_putlst(list);
+		ft_strdel(&path);
 	}
 	return (list);
 }

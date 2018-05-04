@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 18:21:53 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/04 14:00:36 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/04 14:21:02 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ char		*ls_sticky_and_sgid(struct stat infos, char *permission)
 		permission[6] = 's';
 	if (infos.st_mode & S_ISVTX  && (infos.st_mode & S_IXOTH))
 		permission[9] = 't';
-	if (infos.st_mode & S_IFSHAD)
-		permission[0] = '+';
 	return (permission);
 }
 

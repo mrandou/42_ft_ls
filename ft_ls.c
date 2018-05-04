@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 18:23:16 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/04 18:35:36 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int ls_error(int code, char *name)
 		ft_mprintf("sss2\n", "./ft_ls: ", name, ": No such file or directory");
 	if (code == ENOENT)
 	{
-		ft_putstr("./ft_ls: ");
+		ft_putstr_fd("./ft_ls: ", 2);
 		perror(name);
 	}
 	if (code == EACCES)
@@ -52,5 +52,7 @@ int main(int argc, char **argv)
 	if (ls_parse(++argv, argc, &infos) != 0)
 		return (-1);
 	ls_options(&infos);
-	return (argc);
+	ft_lstdel(&infos.path_lst, (void *)&ft_strdel);
+	//while (42);
+	return (0);
 }
