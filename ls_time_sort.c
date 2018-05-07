@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 17:30:39 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 18:18:27 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/07 15:49:35 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int     date_cmp(char *date1, char *date2)
 	if (!(path = get_path(NULL)))
 		return (0);
 	if (!(date1 = ft_strjoin(path, date1)))
-			return (-1);
+		return (-1);
 	if (!(date2 = ft_strjoin(path, date2)))
 		return (-1);
 	lstat(date1, &infos1);

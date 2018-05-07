@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/07 15:05:31 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/07 15:49:20 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,5 @@ int main(int argc, char **argv)
 		return (-1);
 	ls_options(&infos);
 	ls_lstfree(infos.path_lst);
-	//while(42);
 	return (0);
 }
