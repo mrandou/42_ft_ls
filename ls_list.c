@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 14:52:38 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 18:12:01 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/07 13:37:06 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ls_list(t_list *list, char *npath)
 		ft_strdel(&path);
 		list = list->next;
 	}
-	ft_lstdel(&list, (void *)&ft_strdel);
+	ls_lstfree(list);
 	ft_memdel((void *)&tab);
 }
 

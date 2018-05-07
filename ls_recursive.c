@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 13:55:45 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/03 17:35:31 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/07 15:16:35 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void		ls_recursive(t_list *list, char *path, int flags)
 {
-	t_list *head;
-
-	head = list;
 	flags |= M_ARG;
 	while (list)
 	{
@@ -27,33 +24,33 @@ void		ls_recursive(t_list *list, char *path, int flags)
 			return ;
 		list = list->next;
 	}
-	ft_lstdel(&head, (void *)&ft_strdel);
+	ls_lstfree(list);
 }
 
 t_list		*ls_skip_points(t_list *list)
 {
-		if (!ft_strcmp(list->content, "."))
-		{
-			if (list->next)
-				list = list->next;
-			else
-				return (NULL);
-		}
-		if (!ft_strcmp(list->content, ".."))
-		{
-			if (list->next)
-				list = list->next;
-			else
-				return (NULL);
-		}
-		if (!ft_strcmp(list->content, "."))
-		{
-			if (list->next)
-				list = list->next;
-			else
-				return (NULL);
-		}
-		return (list);
+	if (!ft_strcmp(list->content, "."))
+	{
+		if (list->next)
+			list = list->next;
+		else
+			return (NULL);
+	}
+	if (!ft_strcmp(list->content, ".."))
+	{
+		if (list->next)
+			list = list->next;
+		else
+			return (NULL);
+	}
+	if (!ft_strcmp(list->content, "."))
+	{
+		if (list->next)
+			list = list->next;
+		else
+			return (NULL);
+	}
+	return (list);
 }
 
 void		ls_recursive_exec(char *path, char *scpath, int flags)
@@ -66,7 +63,9 @@ void		ls_recursive_exec(char *path, char *scpath, int flags)
 	tmp = NULL;
 	if (!scpath || !path)
 		return ;
-	if (!(tmp = ft_strmjoin(path, "/", scpath)))
+	if (!(tmp = ft_strjoin(path, "/")))
+		return ;
+	if (!(tmp = ft_strjoin(tmp, scpath)))
 		return ;
 	if (lstat(tmp, &infos) != 0)
 		return ;
@@ -75,7 +74,7 @@ void		ls_recursive_exec(char *path, char *scpath, int flags)
 		nxtlst = ls_exec(nxtlst, tmp, flags);
 		ft_putbn();
 		ls_recursive(nxtlst, tmp, flags);
+		ft_strdel(&tmp);
 	}
-	ft_strdel(&tmp);
 	ft_strdel(&scpath);
 }

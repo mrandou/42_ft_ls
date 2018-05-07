@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/04 11:56:02 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/07 13:23:52 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct 		s_infos
 }					t_infos;
 
 int					ls_error(int code, char *path);
+void				ls_lstfree(t_list *list);
 
 int					ls_parse(char **argv, int argc, t_infos *infos);
 unsigned int		ls_get_flags(char *arg);

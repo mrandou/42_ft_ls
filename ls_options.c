@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/04 17:59:15 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/07 15:23:53 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,19 @@ void		ls_options(t_infos *infos)
 			ft_putbn();
 		infos->path_lst = infos->path_lst->next;
 	}
-	ft_lstdel(&infos->path_lst, (void *)&ft_strdel);
+	ls_lstfree(infos->path_lst);
 }
 
 t_list		*ls_exec(t_list *list, char *path, int flags)
 {
 	struct stat	infos;
 	int			i;
-	int 		error;
 
 	i = 0;
 	if (path[0] == '/')
 		i = 1;
-	error = lstat(path, &infos);
-	ls_error(errno, path);
-	if (error == 0)
+	lstat(path, &infos);
+	if (ls_error(errno, path) == 0)
 	{
 		if ((flags & M_ARG) && (infos.st_mode & S_IFDIR))
 			ft_mprintf("ss\n", path + i, ":", NULL);
@@ -75,7 +73,6 @@ t_list		*ls_exec(t_list *list, char *path, int flags)
 			ls_list(list, path);
 		else if (list)
 			ft_putlst(list);
-		ft_strdel(&path);
 	}
 	return (list);
 }
@@ -89,7 +86,7 @@ t_list		*ls_path_content(char *path, int flags)
 
 	tmp = NULL;
 	content_list = NULL;
-	if (ls_access(path) != 1)
+	if (ls_access(path) == -1)
 		return (NULL);
 	if (!(dir = opendir(path)))
 	{

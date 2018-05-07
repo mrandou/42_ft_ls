@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/04 18:35:36 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/07 15:05:31 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,20 @@ int ls_error(int code, char *name)
 	return (0);
 }
 
+void	ls_lstfree(t_list *list)
+{
+	t_list *tmp;
+
+	while (list)
+	{
+		if (list->content)
+			free(list->content);
+		tmp = list;
+		list = list->next;
+		free(tmp);
+	}
+}
+
 int main(int argc, char **argv)
 {
 	t_infos	infos;
@@ -52,7 +66,7 @@ int main(int argc, char **argv)
 	if (ls_parse(++argv, argc, &infos) != 0)
 		return (-1);
 	ls_options(&infos);
-	ft_lstdel(&infos.path_lst, (void *)&ft_strdel);
-	//while (42);
+	ls_lstfree(infos.path_lst);
+	//while(42);
 	return (0);
 }
