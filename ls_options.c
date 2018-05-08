@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/08 11:45:51 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/08 18:17:01 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void		ls_options(t_infos *infos)
 {
 	t_list		*list;
+	t_list		*head;
 
 	list = NULL;
 	ls_merge_sort(&infos->path_lst, &ft_strcmp);
@@ -25,6 +26,7 @@ void		ls_options(t_infos *infos)
 	if (infos->path_lst->next)
 		infos->opt_flags |= M_ARG;
 	ls_merge_sort(&infos->path_lst, &ls_arg_sort);
+	head = infos->path_lst;
 	while (infos->path_lst)
 	{
 		if (infos->opt_flags & FLG_BR)
@@ -38,11 +40,11 @@ void		ls_options(t_infos *infos)
 			list = ls_exec(list, infos->path_lst->content, infos->opt_flags);
 		if (infos->path_lst->next && list)
 			ft_putbn();
+		if (!(infos->opt_flags & FLG_BR))
+			ls_lstfree(list);
 		infos->path_lst = infos->path_lst->next;
 	}
-	if (!(infos->opt_flags & FLG_BR))
-		ls_lstfree(list);
-	ls_lstfree(infos->path_lst);
+	ls_lstfree(head);
 }
 
 t_list		*ls_exec(t_list *list, char *path, int flags)

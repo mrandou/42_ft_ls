@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 13:55:45 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/07 17:19:21 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/08 18:27:09 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_list		*ls_skip_points(t_list *list)
 	return (list);
 }
 
-void		ls_recursive_exec(char *path, char *scpath, int flags)
+void		ls_recursive_exec(char *path, char *content, int flags)
 {
 	struct stat	infos;
 	char *tmp;
@@ -62,9 +62,9 @@ void		ls_recursive_exec(char *path, char *scpath, int flags)
 
 	nxtlst = NULL;
 	tmp = NULL;
-	if (!scpath || !path)
+	if (!content || !path)
 		return ;
-	if (!(tmp = ft_strmjoin(path, "/", scpath)))
+	if (!(tmp = ft_strmjoin(path, "/", content)))
 		return ;
 	if (lstat(tmp, &infos) != 0)
 		return ;
@@ -77,5 +77,5 @@ void		ls_recursive_exec(char *path, char *scpath, int flags)
 	}
 	else
 		ft_strdel(&tmp);
-	ft_strdel(&scpath);
+	ft_strdel(&content);
 }

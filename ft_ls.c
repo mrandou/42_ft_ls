@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/08 11:46:17 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/08 18:29:10 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ int main(int argc, char **argv)
 	if (ls_parse(++argv, argc, &infos) != 0)
 		return (-1);
 	ls_options(&infos);
-	sleep(21);
+	//sleep(21);
 	return (0);
 }

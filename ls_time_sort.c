@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 17:30:39 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/07 15:49:35 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/08 18:04:29 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,12 @@ int     date_cmp(char *date1, char *date2)
 
 t_list 	*ls_time_sort(t_list *list, char *path)
 {
-	if (!(get_path(path)))
+	char *tmp;
+
+	if (!(tmp = get_path(path)))
 		return (NULL);
 	ls_merge_sort(&list, &date_cmp);
+	ft_strdel(&tmp);
 	if (!list)
 		return (NULL);
 	return (list);
