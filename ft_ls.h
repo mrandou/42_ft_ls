@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:20:08 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/08 14:00:49 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/09 18:03:28 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 # define	SIX_MONTH		15770000
 
 # define	BAD_FLAG		404
-# define	BAD_ARG			604
 
 typedef struct 		s_infos
 {

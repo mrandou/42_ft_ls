@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 12:49:43 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/08 18:17:01 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/09 17:46:09 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_list		*ls_exec(t_list *list, char *path, int flags)
 	int			i;
 
 	i = 0;
-	if (path[0] == '/')
+	if (path[0] == '/' && path[1] == '/')
 		i = 1;
 	lstat(path, &infos);
 	if (ls_error(errno, path) == 0)
@@ -106,7 +106,11 @@ t_list		*ls_path_content(char *path, int flags)
 		if (!(flags & FLG_A))
 			while (directory->d_name[0] == '.')
 				if ((directory = readdir(dir)) == NULL)
+				{
+					if (closedir(dir) == -1)
+						return (NULL);
 					return (NULL);
+				}
 		if (!(tmp = ft_lstnew(directory->d_name, sizeof(directory->d_name))))
 			return (NULL);
 		ft_lstadd(&content_list, tmp);

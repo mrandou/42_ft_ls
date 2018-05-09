@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 17:30:39 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/08 18:04:29 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/09 16:09:01 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,18 @@ int     date_cmp(char *date1, char *date2)
 		return (-1);
 	lstat(date1, &infos1);
 	if (ls_error(errno, date1) == -1)
+	{
+		ft_strdel(&date1);
+		ft_strdel(&date2);
 		return (0);
+	}
 	lstat(date2, &infos2);
 	if (ls_error(errno, date2) == -1)
+	{
+		ft_strdel(&date1);
+		ft_strdel(&date2);
 		return (0);
+	}
 	ft_strdel(&date1);
 	ft_strdel(&date2);
 	if (infos1.st_mtime < infos2.st_mtime)

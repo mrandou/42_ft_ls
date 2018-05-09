@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/08 18:29:10 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/09 18:09:44 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,13 @@ int ls_error(int code, char *name)
 		ft_putendl_fd("usage: ft_ls: [-lRart] [file...]", 2);
 		exit(0);
 	}
-	if (code == BAD_ARG)
-		ft_mprintf("sss2\n", "./ft_ls: ", name, ": No such file or directory");
 	if (code == ENOENT)
-	{
-		ft_putstr_fd("./ft_ls: ", 2);
-		perror(name);
-	}
+		ft_mprintf("sss2\n", "./ft_ls: ", name, ": No such file or directory");
 	if (code == EACCES)
 	{
 		ft_putstr_fd("./ft_ls: ", 2);
 		name = ft_strrchr(name, '/');
-		if (name[0] == '/')
-			perror(&name[1]);
-		else
-			perror(name);
+		name[0] == '/' ? perror(&name[1]) : perror(name);
 	}
 	errno = 0;
 	if (code)

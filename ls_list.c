@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 14:52:38 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/07 13:37:06 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/09 18:23:39 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	ls_list(t_list *list, char *npath)
 			return ;
 		lstat(path, &infos);
 		if (ls_error(errno, path) == -1)
+		{
+			ft_memdel((void *)&tab);
 			return ;
+		}
 		ls_print_infos(infos, path, list->content, tab);
 		ft_strdel(&path);
 		list = list->next;
@@ -101,7 +104,7 @@ int		*ls_links_and_blanks(t_list *list, char *path)
 	int						*tab;
 	int						i;
 
-	if (!(tab = ft_memalloc(25)))
+	if (!(tab = ft_memalloc(sizeof(int *) + 9)))
 		return (NULL);
 	i = 0;
 	while (i < 7)
@@ -109,11 +112,19 @@ int		*ls_links_and_blanks(t_list *list, char *path)
 	while (list)
 	{
 		if (!(tmp = ft_strmjoin(path, "/", list->content)))
-			return (0);
+			return (NULL);
 		if (lstat(tmp, &infos) != 0)
-			return (0);
+		{
+			ft_strdel(&tmp);
+			ft_memdel((void *)&tab);
+			return (NULL);
+		}
 		if (!(tab = ls_blanks(infos, tab)))
-			return (0);
+		{
+			ft_strdel(&tmp);
+			ft_memdel((void *)&tab);
+			return (NULL);
+		}
 		tab[0] = tab[0] + infos.st_blocks;
 		ft_strdel(&tmp);
 		list = list->next;
@@ -148,3 +159,5 @@ int			*ls_blanks(struct stat infos, int *tab)
 	}
 	return (tab);
 }
+
+// /private/etc/path.d
