@@ -6,7 +6,7 @@
 #    By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/15 13:40:23 by mrandou           #+#    #+#              #
-#    Updated: 2018/05/04 16:21:27 by mrandou          ###   ########.fr        #
+#    Updated: 2018/05/10 14:32:39 by mrandou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,9 @@ SRC			=		ft_ls.c \
 					ls_time_sort.c \
 					ls_recursive.c \
 					ls_list.c \
-					ls_infos.c
+					ls_infos.c \
+					ls_open.c \
+					ls_print_infos.c
 
 OBJS		=		$(SRC:.c=.o)
 

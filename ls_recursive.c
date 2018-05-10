@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 13:55:45 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/09 15:11:46 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/10 13:19:20 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ t_list		*ls_skip_points(t_list *list)
 void		ls_recursive_exec(char *path, char *content, int flags)
 {
 	struct stat	infos;
-	char *tmp;
-	t_list *nxtlst;
+	char		*tmp;
+	t_list		*nxtlst;
 
 	nxtlst = NULL;
 	tmp = NULL;
@@ -83,5 +83,4 @@ void		ls_recursive_exec(char *path, char *content, int flags)
 	}
 	else
 		ft_strdel(&tmp);
-	//ft_strdel(&content);
 }

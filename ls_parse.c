@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:23:32 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/09 16:00:25 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/10 13:14:36 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int				ls_parse(char **argv, int argc, t_infos *infos)
 {
+	int		nb_flags;
 	t_list	*tmp;
-	int nb_flags;
 
 	nb_flags = 0;
 	tmp = NULL;
@@ -46,34 +46,29 @@ unsigned	int	ls_get_flags(char *arg)
 
 	flag = 0;
 	if (ft_countoc(arg, '-') > 2)
-			ls_error(BAD_FLAG, &*arg);
+		ls_error(BAD_FLAG, &*arg);
 	if (ft_countoc(arg, '-') == 1 && !arg[1])
 	{
-			flag |= M_ARG;
-			ls_error(ENOENT, "-");
-			return (0);
+		flag |= M_ARG;
+		ls_error(ENOENT, "-");
+		return (0);
 	}
 	arg++;
 	while (*arg)
 	{
 		if (!(ft_strchr("-lRart", *arg)))
 			ls_error(BAD_FLAG, &*arg);
-		if (*arg == 'l')
-			flag |= FLG_L;
-		if (*arg == 'R')
-			flag |= FLG_BR;
-		if (*arg == 'a')
-			flag |= FLG_A;
-		if (*arg == 'r')
-			flag |= FLG_R;
-		if (*arg == 't')
-			flag |= FLG_T;
+		*arg == 'l' ? flag |= FLG_L : 0;
+		*arg == 'R' ? flag |= FLG_BR : 0;
+		*arg == 'a' ? flag |= FLG_A : 0;
+		*arg == 'r' ? flag |= FLG_R : 0;
+		*arg == 't' ? flag |= FLG_T : 0;
 		arg++;
 	}
 	return (flag);
 }
 
-int			ls_arg_sort(char *arg1, char *arg2)
+int				ls_arg_sort(char *arg1, char *arg2)
 {
 	struct stat			infos1;
 	struct stat			infos2;

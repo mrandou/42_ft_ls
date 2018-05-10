@@ -6,13 +6,13 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 17:19:31 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/09 18:09:44 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/10 13:44:17 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int ls_error(int code, char *name)
+int		ls_error(int code, char *name)
 {
 	if (code == BAD_FLAG)
 	{
@@ -49,7 +49,7 @@ void	ls_lstfree(t_list *list)
 	}
 }
 
-int main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	t_infos	infos;
 
@@ -58,6 +58,5 @@ int main(int argc, char **argv)
 	if (ls_parse(++argv, argc, &infos) != 0)
 		return (-1);
 	ls_options(&infos);
-	//sleep(21);
 	return (0);
 }

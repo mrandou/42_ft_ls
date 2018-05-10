@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/27 18:21:53 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/04 14:21:02 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/10 14:48:52 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char		*ls_permission(struct stat infos)
 {
-	char *permission;
+	char	*permission;
 
 	if (!(permission = ft_strdup("----------")))
 		return (NULL);
@@ -51,16 +51,16 @@ char		*ls_sticky_and_sgid(struct stat infos, char *permission)
 		permission[9] = 'T';
 	if ((infos.st_mode & S_ISUID) && (infos.st_mode & S_IXUSR))
 		permission[3] = 's';
-	if ((infos.st_mode & S_ISGID)  && (infos.st_mode & S_IXGRP))
+	if ((infos.st_mode & S_ISGID) && (infos.st_mode & S_IXGRP))
 		permission[6] = 's';
-	if (infos.st_mode & S_ISVTX  && (infos.st_mode & S_IXOTH))
+	if (infos.st_mode & S_ISVTX && (infos.st_mode & S_IXOTH))
 		permission[9] = 't';
 	return (permission);
 }
 
 char		ls_get_type(struct stat infos)
 {
-	char type;
+	char	type;
 
 	type = '?';
 	if ((infos.st_mode & S_IFMT) == S_IFLNK)
@@ -80,52 +80,40 @@ char		ls_get_type(struct stat infos)
 	return (type);
 }
 
-void		ls_symb_link(char *path, struct stat infos)
+char		*ls_get_user(struct stat infos)
 {
-	char *rslt;
+	struct passwd	*user;
+	char			*uid_name;
 
-	if (!(rslt = ft_strnew(infos.st_size)))
-		return ;
-	if (!infos.st_size)
-		infos.st_size = 5;
-	if ((infos.st_mode & S_IFMT) == S_IFLNK)
-		readlink(path, rslt, infos.st_size);
-	ft_putstr(" -> ");
-	ft_putstr(rslt);
-	ft_strdel(&rslt);
+	uid_name = NULL;
+	if (!(user = getpwuid(infos.st_uid)))
+	{
+		if (!(uid_name = ft_itoa(infos.st_uid)))
+			return (NULL);
+	}
+	else
+	{
+		if (!(uid_name = ft_strdup(user->pw_name)))
+			return (NULL);
+	}
+	return (uid_name);
 }
 
-void ls_dir_link(char *path)
+char		*ls_get_group(struct stat infos)
 {
-	struct passwd *user;
-	struct group *grp;
-	struct stat infos;
-	char *year;
-	char *permi;
+	struct group	*grp;
+	char			*gid_name;
 
-	if (lstat(path, &infos) != 0)
-		return;
-	if (!(user = getpwuid(infos.st_uid)))
-		return;
+	gid_name = NULL;
 	if (!(grp = getgrgid(infos.st_gid)))
-		return;
-	permi = ls_permission(infos);
-	ft_mprintf("ss", permi, "  ", NULL);
-	ft_putnbr(infos.st_nlink);
-	ft_mprintf("ss", " ", user->pw_name, NULL);
-	ft_mprintf("sss", "  ", grp->gr_name, "  ");
-	ft_mprintf("ds", (void *)infos.st_size, " ", NULL);
-	if (!(year = ft_strsub(ctime(&infos.st_mtime), 20, 4)))
-		return;
-	if ((time(NULL) - infos.st_mtime) > SIX_MONTH)
-		ft_mprintf("sss", ft_strcut(ctime(&infos.st_mtime), 4, 11), " ",
-				   year);
+	{
+		if (!(gid_name = ft_itoa(infos.st_gid)))
+			return (NULL);
+	}
 	else
-		ft_putstr(ft_strcut(ctime(&infos.st_mtime), 4, 16));
-	ft_mprintf("ss", " ", path, NULL);
-	if ((infos.st_mode & S_IFMT) == S_IFLNK)
-		ls_symb_link(path, infos);
-	ft_putbn();
-	ft_strdel(&permi);
-	ft_strdel(&year);
+	{
+		if (!(gid_name = ft_strdup(grp->gr_name)))
+			return (NULL);
+	}
+	return (gid_name);
 }
