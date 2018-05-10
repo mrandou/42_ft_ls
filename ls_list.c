@@ -6,7 +6,7 @@
 /*   By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 14:52:38 by mrandou           #+#    #+#             */
-/*   Updated: 2018/05/09 18:23:39 by mrandou          ###   ########.fr       */
+/*   Updated: 2018/05/10 12:00:39 by mrandou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,23 @@ void	ls_list(t_list *list, char *npath)
 
 void		ls_print_infos(struct stat infos, char *path, char *name, int *tab)
 {
-	struct passwd	*user;
-	struct group	*grp;
+	char			*user;
+	char			*grp;
 	char			*permi;
 	char			*year;
 
-	if (!(user = getpwuid(infos.st_uid)))
+	if (!(user = ls_get_user(infos)))
 		return ;
-	if (!(grp = getgrgid(infos.st_gid)))
+	if (!(grp = ls_get_group(infos)))
 		return ;
 	permi = ls_permission(infos);
 	ft_putstr(permi);
 	ft_putnchar(' ', tab[1] - ft_nblen(infos.st_nlink) + 2);
 	ft_putnbr(infos.st_nlink);
-	ft_mprintf("ss", " ", user->pw_name, NULL);
-	ft_putnchar(' ', tab[2] - ft_strlen(user->pw_name));
-	ft_putstr(grp->gr_name);
-	ft_putnchar(' ', tab[3] - ft_strlen(grp->gr_name));
+	ft_mprintf("ss", " ", user, NULL);
+	ft_putnchar(' ', tab[2] - ft_strlen(user));
+	ft_putstr(grp);
+	ft_putnchar(' ', tab[3] - ft_strlen(grp));
 	ls_size_major_minor(infos, tab);
 	if (!(year = ft_strsub(ctime(&infos.st_mtime), 20, 4)))
 		return ;
@@ -74,6 +74,8 @@ void		ls_print_infos(struct stat infos, char *path, char *name, int *tab)
 	ft_putbn();
 	ft_strdel(&permi);
 	ft_strdel(&year);
+	ft_strdel(&user);
+	ft_strdel(&grp);
 }
 
 void	ls_size_major_minor(struct stat infos, int *tab)
@@ -134,19 +136,19 @@ int		*ls_links_and_blanks(t_list *list, char *path)
 
 int			*ls_blanks(struct stat infos, int *tab)
 {
-	struct passwd	*user;
-	struct group	*grp;
+	char			*uid_name;
+	char			*gid_name;
 
-	if (!(user = getpwuid(infos.st_uid)))
-		return (0);
-	if (!(grp = getgrgid(infos.st_gid)))
-		return (0);
+	if (!(uid_name = ls_get_user(infos)))
+		return (NULL);
+	if (!(gid_name = ls_get_group(infos)))
+		return (NULL);
 	if (tab[1] < ft_nblen(infos.st_nlink))
 		tab[1] = ft_nblen(infos.st_nlink);
-	if (tab[2] < ((int)ft_strlen(user->pw_name) + 2))
-		tab[2] = ((int)ft_strlen(user->pw_name) + 2);
-	if (tab[3] < ((int)ft_strlen(grp->gr_name)))
-		tab[3] = ((int)ft_strlen(grp->gr_name));
+	if (tab[2] < ((int)ft_strlen(uid_name) + 2))
+		tab[2] = ((int)ft_strlen(uid_name) + 2);
+	if (tab[3] < ((int)ft_strlen(gid_name)))
+		tab[3] = ((int)ft_strlen(gid_name));
 	if (tab[4] < ft_nblen(infos.st_size) + 2)
 		tab[4] = ft_nblen(infos.st_size) + 2;
 	if (((infos.st_mode & S_IFMT) == S_IFCHR) ||
@@ -157,7 +159,43 @@ int			*ls_blanks(struct stat infos, int *tab)
 		if (tab[6] < ft_nblen(minor(infos.st_rdev) + 1))
 			tab[6] = ft_nblen(minor(infos.st_rdev)) + 1;
 	}
+	ft_strdel(&uid_name);
+	ft_strdel(&gid_name);
 	return (tab);
+}
+
+char		*ls_get_user(struct stat infos)
+{
+	struct passwd	*user;
+	char			*uid_name;
+
+	uid_name = NULL;
+	if (!(user = getpwuid(infos.st_uid)))
+	{
+		if (!(uid_name = ft_itoa(infos.st_uid)))
+			return (NULL);
+	}
+	else
+		if (!(uid_name = ft_strdup(user->pw_name)))
+			return (NULL);
+	return (uid_name);
+}
+
+char		*ls_get_group(struct stat infos)
+{
+	struct group	*grp;
+	char			*gid_name;
+
+	gid_name = NULL;
+	if (!(grp = getgrgid(infos.st_gid)))
+	{
+		if (!(gid_name = ft_itoa(infos.st_gid)))
+			return (NULL);
+	}
+	else
+		if (!(gid_name = ft_strdup(grp->gr_name)))
+			return (NULL);
+	return (gid_name);
 }
 
 // /private/etc/path.d
