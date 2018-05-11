@@ -6,7 +6,7 @@
 #    By: mrandou <mrandou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/15 13:40:23 by mrandou           #+#    #+#              #
-#    Updated: 2018/05/10 14:32:39 by mrandou          ###   ########.fr        #
+#    Updated: 2018/05/11 14:09:54 by mrandou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ OBJS		=		$(SRC:.c=.o)
 
 CC			=		gcc
 
-CFLAGS		+=		-Wall -Wextra -Werror -g3
+CFLAGS		+=		-Wall -Wextra -Werror
 
 
 all:				$(NAME)
