@@ -1,14 +1,14 @@
-#ft_ls
+# ft_ls
 *42 project developed by mrandou*
 
-###ft_ls -- list directory contents
+### ft_ls -- list directory contents
 ![](https://image.noelshack.com/fichiers/2019/18/5/1556885535-ft-ls-term.jpg)
 
 --------------
-#####Usage
+##### Usage
 ./ft_ls: [-lRart] [file...]
 
-####Options
+#### Options
 ----------------
 
   >  **-a**    Include directory entries whose names begin with a dot (.).
@@ -19,6 +19,6 @@
 
 ![](https://media.giphy.com/media/MFldQbQgMIOD4Y3Ugx/giphy.gif)
 
-###Compatibility informations
+### Compatibility informations
 ---------
 This program was build in MacOS, it possible it does not work in other systems.
